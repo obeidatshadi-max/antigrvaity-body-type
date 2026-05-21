@@ -841,6 +841,59 @@
   /* ─── ANIMATIONS ─── */
   @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
   .organ-card.open .card-body-inner { animation: slideDown 0.35s ease forwards; }
+
+  /* ─── MOBILE FONT ENLARGEMENTS ─── */
+  @media (max-width: 600px) {
+    body { font-size: 17px; }
+
+    /* Header */
+    .header-label       { font-size: 11px; letter-spacing: 2px; }
+    .header-sub         { font-size: 11px; letter-spacing: 2px; }
+
+    /* Share banner */
+    .og-preview-label   { font-size: 10px; }
+    .og-preview-title   { font-size: 15px; }
+    .og-preview-sub     { font-size: 12px; }
+    .og-share-btn       { font-size: 11px; padding: 8px 14px; }
+
+    /* Share modal */
+    .og-modal-label     { font-size: 11px; }
+    .og-share-name      { font-size: 11px; }
+    .og-copy-url-text   { font-size: 12px; }
+    .og-copy-btn        { font-size: 11px; padding: 8px 16px; }
+    .og-modal-close     { font-size: 12px; }
+
+    /* Nav */
+    .nav-dot-num        { font-size: 11px; }
+
+    /* Cards */
+    .card-organ-name    { font-size: 22px; }
+    .card-organ-sub     { font-size: 14px; }
+    .card-company-tag   { font-size: 10px; letter-spacing: 1.5px; padding: 4px 10px; }
+    .card-tap-text      { padding: 14px 14px; }
+
+    /* Card body */
+    .func-label         { font-size: 10px; }
+    .func-name          { font-size: 18px; }
+    .insight-text       { font-size: 15px; }
+    .signals-title      { font-size: 10px; }
+    .signal-item        { font-size: 14px; padding: 12px 12px; }
+    .signal-item .signal-type { font-size: 9px; }
+    .action-item        { font-size: 14px; padding: 12px 14px; }
+
+    /* Stats band */
+    .stat-label         { font-size: 10px; letter-spacing: 1px; }
+
+    /* Expand toggle */
+    .expand-toggle      { font-size: 12px; letter-spacing: 2px; padding: 18px 24px; }
+
+    /* Legend */
+    .legend-title       { font-size: 11px; }
+    .legend-item        { font-size: 14px; }
+
+    /* Footer */
+    .footer-url         { font-size: 13px; letter-spacing: 1.5px; }
+  }
 </style>
 </head>
 <body>
