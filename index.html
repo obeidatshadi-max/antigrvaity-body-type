@@ -15,14 +15,15 @@
 <meta name="description" content="7 essential organs. 7 core functions. 1 living organization. An interactive manager's guide to organizational anatomy by Shadi Shafiq Obeidat.">
 <meta name="author" content="Shadi Shafiq Obeidat">
 <meta name="keywords" content="organizational design, management, leadership, business strategy, pharma, team development, antigravity">
-<link rel="canonical" href="https://bodytype-antigravity.netlify.app">
+<link rel="canonical" href="https://shobeidat.com/">
 
 <!-- Open Graph (Facebook, LinkedIn, WhatsApp, Telegram) -->
 <meta property="og:type"         content="website">
-<meta property="og:url"          content="https://bodytype-antigravity.netlify.app">
+<meta property="og:url"          content="https://shobeidat.com/">
 <meta property="og:title"        content="The Human Body as a Company">
 <meta property="og:description"  content="7 essential organs. 7 core functions. 1 living organization. An interactive manager's guide by Shadi Shafiq Obeidat.">
-<meta property="og:image"        content="https://bodytype-antigravity.netlify.app/og-image-v4.png">
+<meta property="og:image"        content="https://shobeidat.com/og-image-v4.png">
+<meta property="og:image:secure_url" content="https://shobeidat.com/og-image-v4.png">
 <meta property="og:image:width"  content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type"   content="image/png">
@@ -36,7 +37,7 @@
 <meta name="twitter:creator"     content="@shobeidat">
 <meta name="twitter:title"       content="The Human Body as a Company">
 <meta name="twitter:description" content="7 essential organs. 7 core functions. 1 living organization. An interactive manager's guide by Shadi Shafiq Obeidat.">
-<meta name="twitter:image"       content="https://bodytype-antigravity.netlify.app/og-image-v4.png">
+<meta name="twitter:image"       content="https://shobeidat.com/og-image-v4.png">
 <meta name="twitter:image:alt"   content="The Human Body as a Company — Antigravity 70s Manager's Guide">
 
 <!-- Favicon -->
@@ -45,6 +46,8 @@
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Crimson+Pro:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
+<!-- PDF Generation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   /* ─── COLOR SYSTEM ─── */
   :root {
@@ -838,6 +841,162 @@
   }
   .footer-url:hover { color: var(--c1); }
 
+  /* ═══ ORGANIZATIONAL DIAGNOSIS ═══ */
+  .assess-cta {
+    background:var(--dark);
+    padding:clamp(40px,6vw,80px) clamp(24px,8vw,80px);
+    text-align:center;
+    border-bottom:3px solid var(--c1);
+    position:relative;
+    overflow:hidden;
+  }
+  .assess-cta::before {
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% -10%,rgba(201,74,46,0.18) 0%,transparent 60%);
+    pointer-events:none;
+  }
+  .assess-badge {
+    display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:4px;
+    text-transform:uppercase;color:var(--c1);border:1px solid rgba(201,74,46,0.4);
+    padding:5px 14px;margin-bottom:20px;
+  }
+  .assess-cta-title {
+    font-family:var(--font-display);font-size:clamp(34px,6vw,78px);
+    letter-spacing:3px;color:var(--cream);line-height:0.95;margin-bottom:12px;
+  }
+  .assess-cta-title span { color:var(--c1); }
+  .assess-cta-sub {
+    font-family:var(--font-serif);font-size:clamp(15px,1.8vw,19px);font-style:italic;
+    color:rgba(240,232,208,0.55);margin-bottom:10px;max-width:560px;
+    margin-left:auto;margin-right:auto;line-height:1.6;
+  }
+  .assess-cta-detail {
+    font-family:var(--font-mono);font-size:9px;letter-spacing:2px;
+    color:rgba(240,232,208,0.22);text-transform:uppercase;margin-bottom:32px;
+  }
+  .assess-start-btn {
+    font-family:var(--font-display);font-size:clamp(18px,2.5vw,26px);
+    letter-spacing:4px;color:var(--dark);background:var(--c1);border:none;
+    padding:clamp(14px,2vw,20px) clamp(36px,6vw,72px);cursor:pointer;transition:all 0.2s;
+  }
+  .assess-start-btn:hover { background:var(--c3);transform:translateY(-3px);box-shadow:0 8px 24px rgba(201,74,46,0.35); }
+  .assess-start-btn:active { transform:translateY(0); }
+
+  .assess-qscreen { background:var(--dark);border-bottom:3px solid var(--c1);display:none; }
+  .assess-qscreen.active { display:block; }
+  .assess-prog-wrap { height:4px;background:rgba(255,255,255,0.07); }
+  .assess-prog-fill { height:100%;transition:width 0.4s ease,background 0.4s ease;background:var(--c1);width:0%; }
+  .assess-organ-bar {
+    padding:14px 20px;display:flex;align-items:center;gap:12px;
+    border-bottom:1px solid rgba(255,255,255,0.07);background:rgba(0,0,0,0.2);
+  }
+  .assess-organ-emoji { font-size:24px; }
+  .assess-organ-name { font-family:var(--font-display);font-size:17px;letter-spacing:2px;color:var(--cream); }
+  .assess-organ-func {
+    font-family:var(--font-mono);font-size:9px;letter-spacing:1.5px;
+    color:rgba(240,232,208,0.35);text-transform:uppercase;margin-top:1px;
+  }
+  .assess-qcount { margin-left:auto;font-family:var(--font-mono);font-size:11px;color:rgba(240,232,208,0.25);letter-spacing:1px;white-space:nowrap; }
+  .assess-qbody { padding:clamp(28px,5vw,60px) clamp(20px,8vw,80px) clamp(24px,4vw,48px); }
+  .assess-qtext {
+    font-family:var(--font-serif);font-size:clamp(18px,2.4vw,26px);
+    color:var(--cream);line-height:1.55;margin-bottom:36px;min-height:80px;
+    transition:opacity 0.3s,transform 0.3s;
+  }
+  .assess-options { display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px; }
+  .assess-opt {
+    border:1.5px solid rgba(255,255,255,0.14);background:transparent;
+    color:rgba(240,232,208,0.55);padding:clamp(12px,2vw,20px) 4px;
+    cursor:pointer;transition:all 0.15s;display:flex;flex-direction:column;
+    align-items:center;gap:6px;font-family:var(--font-mono);
+  }
+  .assess-opt:hover { border-color:var(--cream);color:var(--cream);background:rgba(255,255,255,0.06);transform:translateY(-3px); }
+  .assess-opt-num { font-family:var(--font-display);font-size:clamp(24px,4vw,40px);line-height:1; }
+  .assess-opt-label { font-size:clamp(7px,0.9vw,9px);letter-spacing:1px;text-transform:uppercase;opacity:0.6; }
+  .assess-scale-ends {
+    display:flex;justify-content:space-between;font-family:var(--font-mono);
+    font-size:9px;letter-spacing:1px;color:rgba(240,232,208,0.22);text-transform:uppercase;
+  }
+
+  .assess-results { background:var(--dark);border-bottom:3px solid var(--c1);display:none; }
+  .assess-results.active { display:block; }
+  .assess-scores-band { display:flex;background:rgba(0,0,0,0.25);border-bottom:1px solid rgba(255,255,255,0.07); }
+  .assess-score-cell { flex:1;padding:14px 4px 10px;text-align:center;border-right:1px solid rgba(255,255,255,0.06);transition:background 0.4s; }
+  .assess-score-cell:last-child { border-right:none; }
+  .assess-score-cell.weakest { background:rgba(201,74,46,0.13); }
+  .assess-score-emoji { font-size:clamp(14px,2vw,20px);display:block;margin-bottom:6px; }
+  .assess-bar-wrap { height:40px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:5px; }
+  .assess-bar { width:10px;border-radius:2px 2px 0 0;transition:height 0.9s cubic-bezier(0.16,1,0.3,1); }
+  .assess-score-val { font-family:var(--font-mono);font-size:clamp(8px,1vw,10px);color:rgba(240,232,208,0.4); }
+  .assess-score-cell.weakest .assess-score-val { color:var(--c1); }
+
+  .rx-wrap { padding:clamp(28px,5vw,60px) clamp(20px,6vw,68px); }
+  .rx-badge { font-family:var(--font-mono);font-size:9px;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px; }
+  .rx-disease-name {
+    font-family:var(--font-display);font-size:clamp(38px,7vw,86px);
+    letter-spacing:3px;color:var(--cream);line-height:0.9;margin-bottom:14px;
+  }
+  .rx-tagline { font-family:var(--font-serif);font-size:clamp(14px,1.8vw,20px);font-style:italic;color:rgba(240,232,208,0.6);margin-bottom:30px;line-height:1.5; }
+  .rx-divider { height:1px;background:rgba(255,255,255,0.1);margin:0 0 28px; }
+  .rx-section-label { font-family:var(--font-mono);font-size:8px;letter-spacing:3px;text-transform:uppercase;color:rgba(240,232,208,0.35);margin-bottom:12px; }
+  .rx-diagnosis { font-family:var(--font-serif);font-size:clamp(14px,1.6vw,17px);color:rgba(240,232,208,0.78);line-height:1.75;margin-bottom:28px; }
+  .rx-symptoms { display:flex;flex-direction:column;gap:8px;margin-bottom:28px; }
+  .rx-symptom {
+    display:flex;align-items:flex-start;gap:12px;padding:13px 16px;
+    border-left:3px solid var(--c1);background:rgba(201,74,46,0.09);
+    font-family:var(--font-body);font-size:clamp(13px,1.3vw,15px);
+    color:rgba(240,232,208,0.78);line-height:1.55;
+  }
+  .rx-sym-icon { color:var(--c1);flex-shrink:0;font-size:14px;margin-top:1px; }
+  .rx-treatment { display:flex;flex-direction:column;gap:10px;margin-bottom:28px; }
+  .rx-step {
+    display:flex;gap:16px;align-items:flex-start;padding:18px 20px;
+    background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);transition:border-color 0.2s;
+  }
+  .rx-step:hover { border-color:rgba(255,255,255,0.16); }
+  .rx-step-num { font-family:var(--font-display);font-size:32px;line-height:1;flex-shrink:0;min-width:28px;opacity:0.45; }
+  .rx-step-title { font-family:var(--font-display);font-size:13px;letter-spacing:1.5px;margin-bottom:5px;opacity:0.65;color:var(--cream); }
+  .rx-step-text { font-family:var(--font-body);font-size:clamp(13px,1.3vw,15px);color:rgba(240,232,208,0.82);line-height:1.65;font-weight:400; }
+  .rx-connected { display:flex;flex-direction:column;gap:8px;margin-bottom:28px; }
+  .rx-connected-item {
+    display:flex;align-items:flex-start;gap:14px;padding:13px 16px;
+    background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
+  }
+  .rx-connected-tag { font-family:var(--font-display);font-size:12px;letter-spacing:1px;flex-shrink:0;min-width:110px;text-align:center;padding:5px 8px;color:white; }
+  .rx-connected-why { font-family:var(--font-body);font-size:clamp(12px,1.2vw,14px);color:rgba(240,232,208,0.58);line-height:1.55;font-weight:300;padding-top:3px; }
+  .rx-prognosis { display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px; }
+  .rx-prog-card { padding:18px 18px; }
+  .rx-prog-card.bad  { background:rgba(184,50,50,0.1); border:1px solid rgba(184,50,50,0.22); }
+  .rx-prog-card.good { background:rgba(58,107,74,0.1); border:1px solid rgba(58,107,74,0.22); }
+  .rx-prog-label { font-family:var(--font-mono);font-size:8px;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px; }
+  .rx-prog-card.bad  .rx-prog-label { color:#e07070; }
+  .rx-prog-card.good .rx-prog-label { color:#70c490; }
+  .rx-prog-text { font-family:var(--font-body);font-size:clamp(12px,1.2vw,14px);color:rgba(240,232,208,0.65);line-height:1.65;font-weight:300; }
+  .rx-retake-btn {
+    display:block;width:100%;background:transparent;border:1px solid rgba(255,255,255,0.15);
+    color:rgba(240,232,208,0.4);padding:16px;font-family:var(--font-mono);font-size:10px;
+    letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:4px;
+  }
+  .rx-retake-btn:hover { border-color:var(--c3);color:var(--c3); }
+  .rx-pdf-btn {
+    display:block;width:100%;border:none;padding:18px;font-family:var(--font-display);
+    font-size:clamp(16px,2vw,20px);letter-spacing:4px;cursor:pointer;transition:all 0.2s;
+    margin-bottom:10px;position:relative;
+  }
+  .rx-pdf-btn:hover { transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.4); }
+  .rx-pdf-btn:active { transform:translateY(0); }
+  .rx-pdf-btn .pdf-sub {
+    display:block;font-family:var(--font-mono);font-size:9px;letter-spacing:2px;
+    opacity:0.7;margin-top:3px;text-transform:uppercase;
+  }
+  @media (max-width:600px) {
+    .assess-opt-label { display:none; }
+    .assess-opt-num   { font-size:clamp(20px,5vw,28px); }
+    .rx-prognosis     { grid-template-columns:1fr; }
+    .rx-connected-item { flex-direction:column;gap:8px; }
+    .rx-connected-tag { min-width:unset; }
+  }
+
   /* ─── ANIMATIONS ─── */
   @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
   .organ-card.open .card-body-inner { animation: slideDown 0.35s ease forwards; }
@@ -1010,6 +1169,52 @@
 <!-- ═══ CARDS ═══ -->
 <div class="cards-container" id="cardsContainer"></div>
 
+<!-- ═══ ORGANIZATIONAL DIAGNOSIS ═══ -->
+<div id="assessWrap">
+
+  <!-- Step 0: CTA -->
+  <div id="assessCTA" class="assess-cta">
+    <div class="assess-badge">● Diagnostic Tool</div>
+    <div class="assess-cta-title">DIAGNOSE YOUR<br><span>ORGANIZATION</span></div>
+    <div class="assess-cta-sub">14 questions. 7 organs. One honest answer reveals where your organization is quietly bleeding.</div>
+    <div class="assess-cta-detail">2 questions per organ · Takes 3 minutes · Results are instant</div>
+    <button class="assess-start-btn" onclick="startAssessment()">Begin Diagnosis →</button>
+  </div>
+
+  <!-- Step 1: Questions (one at a time) -->
+  <div id="assessQScreen" class="assess-qscreen">
+    <div class="assess-prog-wrap">
+      <div class="assess-prog-fill" id="assessProgFill"></div>
+    </div>
+    <div class="assess-organ-bar">
+      <span class="assess-organ-emoji" id="assessOrganEmoji">🧠</span>
+      <div>
+        <div class="assess-organ-name" id="assessOrganName">BRAIN</div>
+        <div class="assess-organ-func" id="assessOrganFunc">Leadership &amp; Strategy</div>
+      </div>
+      <div class="assess-qcount" id="assessQCount">1 / 14</div>
+    </div>
+    <div class="assess-qbody">
+      <div class="assess-qtext" id="assessQText"></div>
+      <div class="assess-options">
+        <button class="assess-opt" onclick="answerQ(1)"><span class="assess-opt-num">1</span><span class="assess-opt-label">Never</span></button>
+        <button class="assess-opt" onclick="answerQ(2)"><span class="assess-opt-num">2</span><span class="assess-opt-label">Rarely</span></button>
+        <button class="assess-opt" onclick="answerQ(3)"><span class="assess-opt-num">3</span><span class="assess-opt-label">Sometimes</span></button>
+        <button class="assess-opt" onclick="answerQ(4)"><span class="assess-opt-num">4</span><span class="assess-opt-label">Often</span></button>
+        <button class="assess-opt" onclick="answerQ(5)"><span class="assess-opt-num">5</span><span class="assess-opt-label">Always</span></button>
+      </div>
+      <div class="assess-scale-ends"><span>← Never</span><span>Always →</span></div>
+    </div>
+  </div>
+
+  <!-- Step 2: Results + Prescription -->
+  <div id="assessResults" class="assess-results">
+    <div class="assess-scores-band" id="assessScoresBand"></div>
+    <div class="rx-wrap" id="rxWrap"></div>
+  </div>
+
+</div>
+
 <!-- ═══ MANIFESTO ═══ -->
 <div class="manifesto-card">
   <div class="manifesto-icon">👥</div>
@@ -1126,7 +1331,7 @@
 
 <script>
 // ─── CONFIG — update after Supabase deployment ───────────────────────────────
-const SITE_URL   = 'https://bodytype-antigravity.netlify.app';
+const SITE_URL   = 'https://shobeidat.com/';
 const SITE_TITLE = 'The Human Body as a Company — Antigravity Manager\'s Guide';
 const SITE_DESC  = '7 essential organs. 7 core functions. 1 living organization. An interactive manager\'s guide by Shadi Shafiq Obeidat.';
 
@@ -1381,7 +1586,655 @@ async function copyURL() {
   } catch (_) {}
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+// ═══ ORGANIZATIONAL DIAGNOSIS ═══════════════════════════════════════════════
+
+const QUESTIONS = [
+  { q:"When a crisis hits, does your leadership team make swift, clear decisions — not endless deliberation?", organ:0 },
+  { q:"Do strategic priorities from leadership visibly change how teams spend their time day-to-day?", organ:0 },
+  { q:"Would your people describe the culture they actually experience — not the values on the wall — as genuinely energizing?", organ:1 },
+  { q:"Do your best people stay because of what they feel — not only because of what they're paid?", organ:1 },
+  { q:"Has your organization tested a new idea that failed in the last 90 days — and learned from it openly?", organ:2 },
+  { q:"Does your strategy contain genuinely new thinking — or is it last year's plan with updated numbers?", organ:2 },
+  { q:"Can your team deliver results through reliable, repeatable processes — without depending on heroic individual effort?", organ:3 },
+  { q:"When delays or quality failures occur, are root causes found in processes — not blamed on specific people?", organ:3 },
+  { q:"Are risks and compliance issues surfaced before they become problems — not discovered after the damage is done?", organ:4 },
+  { q:"Do your managers treat compliance as organizational protection — not as bureaucratic friction to work around?", organ:4 },
+  { q:"Does every line in your budget earn its place — including costs that have 'always been there'?", organ:5 },
+  { q:"Do non-financial managers genuinely understand and own their budget as a strategic responsibility?", organ:5 },
+  { q:"Are your legal, security, and quality functions seen as business enablers by the teams they serve?", organ:6 },
+  { q:"Does external competition drive more organizational energy than internal politics and territorial behavior?", organ:6 },
+];
+
+const PRESCRIPTIONS = [
+  {
+    organ:'BRAIN', emoji:'🧠', accent:'#c94a2e',
+    disease:'STRATEGIC STROKE',
+    tagline:'The command center has gone silent. The body keeps moving — on reflex.',
+    diagnosis:'Your organization is operating on stored habit, not live direction. The brain has stopped generating clear, consistent signals. Decisions get deferred, priorities blur, and the team keeps moving because momentum exists — not because direction is clear. The longer this persists, the more autonomy fills the vacuum — not always toward where you intended.',
+    symptoms:[
+      'Meetings multiply but decisions don\'t emerge from them',
+      'Teams ask the same strategic questions repeatedly without resolution',
+      'Leadership appears extremely busy — but the direction feels increasingly foggy to the people executing it'
+    ],
+    treatment:[
+      { title:'BRAIN REHAB', text:'Introduce a weekly "decision clearing" ritual — every pending decision gets an owner, a deadline, and a close. No more open loops tolerated.' },
+      { title:'STRATEGIC FASTING', text:'Block 90 uninterrupted minutes per week for directional thinking only. No email. No meetings. This is non-negotiable surgery time — protect it.' },
+      { title:'NEURAL DELEGATION', text:'Map which decisions require the brain vs. which are operational reflex. Stop treating every choice as if it requires the CEO\'s frontal lobe. Complexity is not the same as importance.' }
+    ],
+    connected:[
+      { name:'HEART', accent:'#b83232', why:'Culture loses purpose and momentum when there is no clear direction to believe in' },
+      { name:'STOMACH', accent:'#8b5e3c', why:'Operations drift without strategic signal — teams become busy but misaligned' }
+    ],
+    untreated:'The organization survives on muscle memory for months. Then a competitor makes a bold move and there is no response prepared — only a meeting scheduled to discuss one.',
+    treated:'Within 60 days, the team stops asking "what are we doing?" and starts asking "how do we do it better?" That is the brain coming back online.'
+  },
+  {
+    organ:'HEART', emoji:'❤️', accent:'#b83232',
+    disease:'ORGANIZATIONAL ARRHYTHMIA',
+    tagline:'The rhythm is off. The body is running — but nothing is beating together.',
+    diagnosis:'The heart doesn\'t just pump blood — it sets the rhythm every other organ follows. When culture breaks, the pulse becomes irregular. Some parts are overworked; others have flatlined. People arrive, complete tasks, attend meetings — but the shared heartbeat that makes a team feel alive has gone irregular. You cannot mandate a heartbeat back. You have to earn it — consistently, visibly, repeatedly.',
+    symptoms:[
+      'High performers quietly exit while average performers safely remain',
+      'Recognition is inconsistent, reactive, or distributed through political proximity rather than contribution',
+      'People say the right things in meetings and disengage the moment they end'
+    ],
+    treatment:[
+      { title:'CARDIOVERSION', text:'Acknowledge the cultural dysfunction explicitly — name it in public, not only in private. The pretense that everything is fine is itself part of the disease.' },
+      { title:'PULSE MONITORING', text:'Install a monthly 3-question anonymous culture check. Share results with the team. Commit to one visible action. Repeat every month without exception — consistency is the medicine.' },
+      { title:'ENERGY TRANSFUSION', text:'Identify your 3 highest-energy, most authentic people. Give them visible platforms. Culture moves from those who feel it — not from those who manage it from a distance.' }
+    ],
+    connected:[
+      { name:'IMMUNE', accent:'#4a3a6e', why:'Disengaged culture breeds internal politics — the body begins attacking its own healthy cells from within' },
+      { name:'BRAIN', accent:'#c94a2e', why:'Leadership loses moral authority when the culture experienced contradicts the values declared' }
+    ],
+    untreated:'Quiet quitting spreads invisibly. Your best people leave first — they have options. What remains functions technically but is emotionally hollow. Metrics look acceptable until they suddenly collapse.',
+    treated:'Within 90 days, you notice energy in hallways before you see it in performance data. The heartbeat returns before the numbers confirm it.'
+  },
+  {
+    organ:'LUNGS', emoji:'🫁', accent:'#c97e2e',
+    disease:'ORGANIZATIONAL COPD',
+    tagline:'The organization is recycling stale air — and calling it breathing.',
+    diagnosis:'Chronic Organizational Paralysis Disorder. The lungs bring in fresh oxygen — new thinking, new methods, new perspectives. When blocked, the organization survives on what it already knows. It functions adequately until the environment shifts. Then it suffocates on the carbon dioxide of its own certainty. Stagnation is not stability. It is suffocation in slow motion.',
+    symptoms:[
+      'New ideas get enthusiastically "parked" in meetings — and never revisited again',
+      'The answer to "why do we do it this way?" is "we always have" — delivered with pride, not embarrassment',
+      '"We tried that before" kills more ideas than any budget constraint or executive veto'
+    ],
+    treatment:[
+      { title:'BRONCHODILATOR', text:'Create a 72-hour fast experiment ritual. Small ideas get tested in 3 days with no approval required below a defined cost threshold. Speed is the medicine.' },
+      { title:'OXYGEN THERAPY', text:'Dedicate 10% of one meeting per week to "what did we learn?" — not "what did we complete?" Measure learning explicitly, not just output.' },
+      { title:'AIRWAY CLEARING', text:'Celebrate one smart failure per month publicly. Name it. Discuss what was learned. Make failing forward the visible, rewarded behavior — not a shameful secret.' }
+    ],
+    connected:[
+      { name:'BRAIN', accent:'#c94a2e', why:'Strategy becomes dangerously stale when no fresh thinking enters the decision system' },
+      { name:'STOMACH', accent:'#8b5e3c', why:'Operations never improve if no one is structurally permitted to question the existing process' }
+    ],
+    untreated:'The organization becomes obsolete gracefully — still profitable, still busy, until a year when it suddenly isn\'t. Disruption never announces itself with a calendar invite.',
+    treated:'Within 60 days, teams stop waiting for permission and start bringing options instead of problems. The air quality in the organization changes noticeably before the metrics reflect it.'
+  },
+  {
+    organ:'STOMACH', emoji:'⚙️', accent:'#8b5e3c',
+    disease:'OPERATIONAL CONSTIPATION',
+    tagline:'Everything goes in. Very little comes out on time.',
+    diagnosis:'The stomach transforms raw input into usable output. When processes bloat, the same resources produce less and less value. The organization is technically full of work — full of meetings, projects, and activity — but starving for results. Every layer of approval added was once a good idea. Collectively, they have become obstruction. Busyness is not metabolism. Movement is not throughput.',
+    symptoms:[
+      'Delivery timelines are consistently longer than estimated — and everyone privately knows it before the project starts',
+      'The same approval, review, and sign-off steps appear at every stage of every initiative regardless of scale',
+      'Heroic individual effort is celebrated and rewarded — which reveals the process depends on it to function at all'
+    ],
+    treatment:[
+      { title:'DIGESTIVE RESET', text:'Map one core process end-to-end in a 2-hour session. Count every single step. Eliminate anything that does not add visible value to the output or the customer. Non-negotiable.' },
+      { title:'FIBER PROTOCOL', text:'Build a "standard work" document for your top 3 recurring processes — separating what is truly non-negotiable from what is simply calcified habit masquerading as policy.' },
+      { title:'METABOLIC BOOST', text:'Start measuring throughput, not just output. How fast does work move through the system? Slow throughput is the symptom. Process blockage is the diagnosis.' }
+    ],
+    connected:[
+      { name:'KIDNEYS', accent:'#2a5c7a', why:'Operational bloat translates directly and proportionally into financial waste — they share the same root cause' },
+      { name:'BRAIN', accent:'#c94a2e', why:'Leaders lose all strategic clarity when permanently buried in operational noise they should have delegated or eliminated' }
+    ],
+    untreated:'The organization hires more people to do the same volume of work. Costs increase. Output stays flat. Everyone feels exhausted and can\'t explain why.',
+    treated:'Within 45 days of process clarity, teams report feeling less busy but completing more. That is not a paradox — that is metabolism returning to health.'
+  },
+  {
+    organ:'LIVER', emoji:'🟢', accent:'#3a6b4a',
+    disease:'COMPLIANCE CIRRHOSIS',
+    tagline:'Toxins have been accumulating quietly for years.',
+    diagnosis:'The liver filters what should not remain in the system. When risk and compliance functions are bypassed, marginalized, or consulted only after decisions are already made — toxins build up invisibly. The organ appears functional. The organization appears healthy. Until the accumulated burden becomes a crisis. Cirrhosis doesn\'t announce itself. Neither does organizational ethical drift. It compounds silently until it cannot be ignored.',
+    symptoms:[
+      'Risk conversations happen after decisions are made — as post-hoc justification, not as evaluation',
+      'Compliance is treated as a checkbox exercise rather than a thinking lens applied during decisions',
+      'Near-misses go unreported because the culture around reporting feels punitive rather than protective'
+    ],
+    treatment:[
+      { title:'DETOX PROTOCOL', text:'Make "what could go wrong?" the first question in every strategic decision — not the final one. The sequence of questions defines the quality of decisions.' },
+      { title:'LIVER FLUSH', text:'Audit your 5 most significant decisions from the last quarter. Were risks named and consciously accepted — or silently ignored in favor of speed and comfort?' },
+      { title:'REGENERATION', text:'Build genuine psychological safety for surfacing compliance concerns. If the messenger gets shot, the messages stop coming — and the toxins stay hidden until they become crises.' }
+    ],
+    connected:[
+      { name:'IMMUNE', accent:'#4a3a6e', why:'Ignored risks don\'t disappear — they become legal, reputational, and operational crises compounded by time' },
+      { name:'BRAIN', accent:'#c94a2e', why:'Risk-blind leadership produces decisions that appear confident and strategically bold — until they collapse suddenly' }
+    ],
+    untreated:'One major unfiltered risk eventually becomes a visible crisis. The damage is always proportional to how long the toxin was allowed to accumulate without filtration or intervention.',
+    treated:'When risk becomes part of the decision language rather than an obstacle to it, the organization makes bolder moves more safely — not fewer moves more fearfully.'
+  },
+  {
+    organ:'KIDNEYS', emoji:'💧', accent:'#2a5c7a',
+    disease:'FINANCIAL EDEMA',
+    tagline:'The organization is retaining what it should be releasing.',
+    diagnosis:'The kidneys filter metabolic waste from the bloodstream. Financial edema means the organization is swollen with costs that should have been eliminated — sunk cost attachments, unquestioned budget lines, financial waste hidden inside the noise of busyness. The balance sheet looks acceptable until pressure arrives and there is no reserve, no flexibility, and no honest accounting of where value actually comes from versus where money quietly disappears to.',
+    symptoms:[
+      'Budget lines persist because "they\'ve always been there" — not because anyone can articulate their current value',
+      'Non-financial managers treat budget as a given allowance rather than a strategic tool with consequences',
+      'Financial reviews focus entirely on spend vs. budget — never on value delivered vs. cost invested'
+    ],
+    treatment:[
+      { title:'DIALYSIS SESSION', text:'Apply zero-based questioning to 20% of your cost base. "If we were building this from scratch today, would we spend this?" No sacred budget items. No untouchable lines. No exceptions.' },
+      { title:'KIDNEY FUNCTION TEST', text:'Ask every team leader to identify their top 3 activities with the lowest value-to-cost ratio. Publish results internally. Act on them within 30 days — publicly.' },
+      { title:'HYDRATION', text:'Train non-financial managers in the language of financial stewardship — not accounting theory, but ownership thinking. What earns its place here? What doesn\'t?' }
+    ],
+    connected:[
+      { name:'STOMACH', accent:'#8b5e3c', why:'Operational inefficiency and financial waste share the same root cause and compound each other in a reinforcing cycle' },
+      { name:'BRAIN', accent:'#c94a2e', why:'Where budget goes tells the real strategic story — misaligned spending signals misaligned organizational direction' }
+    ],
+    untreated:'The organization is profitable in favorable conditions and fragile the moment pressure arrives. When constraints hit, there is no reserve — it was spent on what felt familiar, not what was essential.',
+    treated:'Financial clarity creates strategic courage. When leadership knows exactly where every resource goes, they can choose — with conviction — where it should go next.'
+  },
+  {
+    organ:'IMMUNE SYSTEM', emoji:'🛡️', accent:'#4a3a6e',
+    disease:'AUTOIMMUNE DISORDER',
+    tagline:'The body has turned against itself.',
+    diagnosis:'The most dangerous immune dysfunction is not external attack — it is when the defense system turns inward. Organizational autoimmune disorder means the organization\'s best energy is consumed fighting itself: internal politics, territorial behavior, blame culture, and toxic accountability that destroys healthy talent from within. The market barely needs to compete. The organization is doing the damage for it — efficiently and invisibly.',
+    symptoms:[
+      'High performers feel targeted, exposed, or politically unsafe — rather than protected by the organization\'s systems',
+      'When failures occur, the investigation focuses on finding who to blame rather than what structural change prevents recurrence',
+      'Your most capable people have become politically cautious — withholding ideas to reduce their exposure to criticism'
+    ],
+    treatment:[
+      { title:'IMMUNOSUPPRESSION', text:'Name the toxic internal behaviors explicitly in leadership conversations — territorial behavior, political maneuvering, blame distribution. Zero tolerance means naming it first, from the top, visibly.' },
+      { title:'ANTIBODY PROTOCOL', text:'Build a clear, trusted, politics-bypassing escalation path for QA, security, and legal concerns. The path must be genuinely safe enough that people will actually use it.' },
+      { title:'IMMUNE REBUILDING', text:'Publicly celebrate people who surface problems early. Make early detection the heroic behavior — not the polished post-crisis damage control report that arrives six months later.' }
+    ],
+    connected:[
+      { name:'HEART', accent:'#b83232', why:'Internal politics erode the cultural trust that keeps organizational energy flowing and keeps people genuinely engaged' },
+      { name:'BRAIN', accent:'#c94a2e', why:'Leadership receives distorted, filtered information when people fear the consequences of honest and accurate reporting' }
+    ],
+    untreated:'The organization develops performance theater — visible activity, invisible problems, acceptable metrics until they suddenly collapse when reality can no longer be deferred or managed through optics.',
+    treated:'Within 90 days of naming and actively stopping the autoimmune behavior, trust returns before the metrics confirm it. People start bringing problems while they are still small enough to solve easily.'
+  }
+];
+
+let currentQ = 0, answers = [], lastScores = [], lastWeakestIdx = 0;
+
+function startAssessment() {
+  currentQ = 0; answers = [];
+  document.getElementById('assessCTA').style.display = 'none';
+  document.getElementById('assessQScreen').classList.add('active');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q    = QUESTIONS[currentQ];
+  const org  = ORGANS[q.organ];
+  const pct  = (currentQ / QUESTIONS.length) * 100;
+
+  document.getElementById('assessProgFill').style.width      = pct + '%';
+  document.getElementById('assessProgFill').style.background = org.accent;
+  document.getElementById('assessOrganEmoji').textContent    = org.emoji;
+  document.getElementById('assessOrganName').textContent     = org.name;
+  document.getElementById('assessOrganFunc').textContent     = org.company;
+  document.getElementById('assessQCount').textContent        = (currentQ + 1) + ' / ' + QUESTIONS.length;
+
+  const txt = document.getElementById('assessQText');
+  txt.style.opacity = '0'; txt.style.transform = 'translateY(10px)';
+  txt.textContent = q.q;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    txt.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+    txt.style.opacity = '1'; txt.style.transform = 'translateY(0)';
+  }));
+}
+
+function answerQ(val) {
+  const org  = ORGANS[QUESTIONS[currentQ].organ];
+  const btns = document.querySelectorAll('.assess-opt');
+  const btn  = btns[val - 1];
+  btn.style.background   = org.accent;
+  btn.style.color        = 'white';
+  btn.style.borderColor  = org.accent;
+
+  setTimeout(() => {
+    btn.style.background = btn.style.color = btn.style.borderColor = '';
+    answers.push(val);
+    currentQ++;
+    if (currentQ >= QUESTIONS.length) showResults();
+    else renderQuestion();
+  }, 220);
+}
+
+function showResults() {
+  document.getElementById('assessQScreen').classList.remove('active');
+  const el = document.getElementById('assessResults');
+  el.classList.add('active');
+
+  // Score per organ (avg of its 2 questions)
+  const scores = ORGANS.map((_, i) =>
+    answers.filter((__, qi) => QUESTIONS[qi].organ === i)
+           .reduce((a, b) => a + b, 0) / 2
+  );
+  const minScore   = Math.min(...scores);
+  const weakestIdx = scores.indexOf(minScore);
+  lastScores = scores; lastWeakestIdx = weakestIdx;
+
+  // Build scores bar chart
+  document.getElementById('assessScoresBand').innerHTML = ORGANS.map((o, i) => `
+    <div class="assess-score-cell ${i === weakestIdx ? 'weakest' : ''}">
+      <span class="assess-score-emoji">${o.emoji}</span>
+      <div class="assess-bar-wrap">
+        <div class="assess-bar" id="abar-${i}" style="height:0;background:${o.accent}"></div>
+      </div>
+      <div class="assess-score-val">${scores[i].toFixed(1)}</div>
+    </div>`).join('');
+
+  setTimeout(() => ORGANS.forEach((_, i) => {
+    const b = document.getElementById('abar-' + i);
+    if (b) b.style.height = ((scores[i] / 5) * 38) + 'px';
+  }), 80);
+
+  // Build prescription
+  const rx = PRESCRIPTIONS[weakestIdx];
+  document.getElementById('rxWrap').innerHTML = `
+    <div class="rx-badge" style="color:${rx.accent}">● Diagnosis · Weakest Organ: ${rx.organ} — ${ORGANS[weakestIdx].company}</div>
+    <div class="rx-disease-name">${rx.disease}</div>
+    <div class="rx-tagline">${rx.tagline}</div>
+    <div class="rx-divider"></div>
+
+    <div class="rx-section-label">The Clinical Picture</div>
+    <div class="rx-diagnosis">${rx.diagnosis}</div>
+
+    <div class="rx-section-label">Symptoms You Are Living With</div>
+    <div class="rx-symptoms">${rx.symptoms.map(s =>
+      `<div class="rx-symptom"><span class="rx-sym-icon">⚠</span><span>${s}</span></div>`).join('')}
+    </div>
+
+    <div class="rx-section-label">Treatment Protocol</div>
+    <div class="rx-treatment">${rx.treatment.map((t, i) => `
+      <div class="rx-step">
+        <div class="rx-step-num" style="color:${rx.accent}">${i+1}</div>
+        <div>
+          <div class="rx-step-title" style="color:${rx.accent}">${t.title}</div>
+          <div class="rx-step-text">${t.text}</div>
+        </div>
+      </div>`).join('')}
+    </div>
+
+    <div class="rx-section-label">Connected Organs at Risk</div>
+    <div class="rx-connected">${rx.connected.map(c => `
+      <div class="rx-connected-item">
+        <div class="rx-connected-tag" style="background:${c.accent}">${c.name}</div>
+        <div class="rx-connected-why">${c.why}</div>
+      </div>`).join('')}
+    </div>
+
+    <div class="rx-section-label">Prognosis</div>
+    <div class="rx-prognosis">
+      <div class="rx-prog-card bad">
+        <div class="rx-prog-label">If Left Untreated</div>
+        <div class="rx-prog-text">${rx.untreated}</div>
+      </div>
+      <div class="rx-prog-card good">
+        <div class="rx-prog-label">If Treated Now</div>
+        <div class="rx-prog-text">${rx.treated}</div>
+      </div>
+    </div>
+
+    <button class="rx-pdf-btn" style="background:${rx.accent};color:white" onclick="generatePDF()">
+      ⬇ Download Your Diagnostic Report
+      <span class="pdf-sub">3-page PDF · Organ scores · Treatment protocol · Prognosis</span>
+    </button>
+    <button class="rx-retake-btn" onclick="retakeAssessment()">↺ Retake the Diagnosis</button>
+  `;
+
+  el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function retakeAssessment() {
+  document.getElementById('assessResults').classList.remove('active');
+  document.getElementById('assessCTA').style.display = '';
+  document.getElementById('assessWrap').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+
+// ═══ PDF REPORT GENERATOR ════════════════════════════════════════════════════
+function generatePDF() {
+  if (!window.jspdf) { alert('PDF library not loaded yet — please try again in a moment.'); return; }
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const W = 210, H = 297, M = 14;
+
+  const scores    = lastScores;
+  const wIdx      = lastWeakestIdx;
+  const rx        = PRESCRIPTIONS[wIdx];
+  const organ     = ORGANS[wIdx];
+  const dateStr   = new Date().toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}).toUpperCase();
+
+  // ── Color helpers ──────────────────────────────────────────────────────────
+  function h2r(hex){ return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)]; }
+  function sf(hex){ const [r,g,b]=h2r(hex); doc.setFillColor(r,g,b); }
+  function sd(hex){ const [r,g,b]=h2r(hex); doc.setDrawColor(r,g,b); }
+  function st(hex){ const [r,g,b]=h2r(hex); doc.setTextColor(r,g,b); }
+  function lf(hex,alpha){ // light fill: blend hex with cream #f0e8d0
+    const [r,g,b]=h2r(hex); const cr=240,cg=232,cd=208;
+    doc.setFillColor(Math.round(cr+(r-cr)*alpha), Math.round(cg+(g-cg)*alpha), Math.round(cd+(b-cd)*alpha));
+  }
+
+  const STRIPE_C = ['#c94a2e','#c97e2e','#c9b42e','#4a5c2e','#2a5c7a','#4a3a6e','#1c2630'];
+  function stripe(y, h){ STRIPE_C.forEach((c,i)=>{ sf(c); doc.rect(i*(W/7), y, W/7+0.5, h,'F'); }); }
+
+  // ══════════════════════════════════════════════════════════════════════
+  // PAGE 1 — COVER · ORGAN HEALTH CHART
+  // ══════════════════════════════════════════════════════════════════════
+  stripe(0, 5);
+
+  // Dark header
+  sf('#1c2630'); doc.rect(0, 5, W, 42, 'F');
+
+  // Header kicker
+  doc.setFont('helvetica','bold'); doc.setFontSize(7);
+  st('#c97e2e'); doc.text('ANTIGRAVITY-70S  ·  ORGANIZATIONAL DIAGNOSTIC REPORT', M, 14);
+
+  // Title
+  doc.setFont('helvetica','bold'); doc.setFontSize(28);
+  st('#f0e8d0'); doc.text('ORGANIZATIONAL', M, 28);
+  st('#c94a2e'); doc.text('HEALTH REPORT', M, 40);
+
+  // Date right side
+  doc.setFont('helvetica','normal'); doc.setFontSize(8);
+  st('#c97e2e'); doc.text(dateStr, W-M, 17, {align:'right'});
+
+  // Avg score
+  const avg = (scores.reduce((a,b)=>a+b,0)/7).toFixed(1);
+  doc.setFont('helvetica','bold'); doc.setFontSize(26);
+  st('#c97e2e'); doc.text(avg, W-M, 33, {align:'right'});
+  doc.setFont('helvetica','normal'); doc.setFontSize(7);
+  st('#f0e8d0'); doc.text('AVG HEALTH SCORE / 5', W-M, 40, {align:'right'});
+
+  // ── Section label ─────────────────────────────────────────────────────
+  let y = 57;
+  doc.setFont('helvetica','bold'); doc.setFontSize(8);
+  st('#4a5c2e'); doc.text('ORGAN HEALTH SCORES — ALL 7 FUNCTIONS', M, y);
+  y += 4; sd('#4a5c2e'); doc.setLineWidth(0.4); doc.line(M, y, W-M, y);
+  y += 6;
+
+  // ── Organ bars ────────────────────────────────────────────────────────
+  const BAR_X = M + 58, BAR_MAX = 105, ROW_H = 15;
+  ORGANS.forEach((o, i) => {
+    const score = scores[i];
+    const isW   = i === wIdx;
+    const barW  = (score / 5) * BAR_MAX;
+
+    // Row highlight for weakest
+    if (isW) { lf(o.accent, 0.12); doc.rect(M-2, y-5, W-M*2+4, ROW_H, 'F'); }
+
+    // Organ number pill
+    sf(o.accent); doc.rect(M, y-4, 8, 7, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(9);
+    st('#ffffff'); doc.text(String(o.num), M+1.8, y+1.2);
+
+    // Organ name
+    doc.setFont('helvetica','bold'); doc.setFontSize(10);
+    st(isW ? o.accent : '#1c2630'); doc.text(o.name, M+11, y+1.5);
+
+    // Function label
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    st('#808080'); doc.text(o.company, M+11, y+7);
+
+    // Bar track
+    doc.setFillColor(220,215,205); doc.rect(BAR_X, y-2.5, BAR_MAX, 6, 'F');
+
+    // Bar fill — gradient feel using score-based lightness
+    sf(o.accent); doc.rect(BAR_X, y-2.5, barW, 6, 'F');
+
+    // Score number
+    doc.setFont('helvetica','bold'); doc.setFontSize(11);
+    st(isW ? o.accent : '#1c2630');
+    doc.text(score.toFixed(1), BAR_X + BAR_MAX + 4, y+1.5);
+
+    // Weakest tag
+    if (isW) {
+      sf(o.accent);
+      doc.rect(BAR_X + BAR_MAX + 14, y-3.5, 22, 6.5, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.5);
+      st('#ffffff'); doc.text('WEAKEST ▼', BAR_X + BAR_MAX + 15.5, y+1);
+    }
+
+    y += ROW_H;
+  });
+
+  y += 2;
+  sd('#e0d8c0'); doc.setLineWidth(0.4); doc.line(M, y, W-M, y); y += 8;
+
+  // ── Weakest organ callout ─────────────────────────────────────────────
+  const [ar,ag,ab] = h2r(organ.accent);
+  doc.setFillColor(ar,ag,ab); doc.rect(M, y, W-M*2, 48, 'F');
+
+  // Inner lighter overlay
+  lf(organ.accent, 0.85); doc.rect(M+3, y+3, W-M*2-6, 42, 'F');
+  sf(organ.accent); doc.rect(M, y, W-M*2, 48, 'F'); // redraw solid
+
+  // Pattern lines
+  doc.setDrawColor(255,255,255); doc.setLineWidth(0.2);
+  for(let lx=M-5; lx<W-M+20; lx+=8){
+    doc.line(lx, y, lx+10, y+48);
+  }
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+  st('#ffffff'); doc.setGState && doc.setGState(new doc.GState({opacity:0.6}));
+  doc.text('WEAKEST ORGAN IDENTIFIED  ·  PRIMARY DIAGNOSIS', M+5, y+10);
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(24);
+  st('#ffffff');
+  try { doc.setGState(new doc.GState({opacity:1})); } catch(e){}
+  doc.text(rx.disease, M+5, y+25);
+
+  doc.setFont('times','italic'); doc.setFontSize(11);
+  doc.setTextColor(255,255,255);
+  const tagWrap = doc.splitTextToSize(rx.tagline, W-M*2-10);
+  doc.text(tagWrap, M+5, y+34);
+
+  // Organ label pill
+  doc.setFillColor(0,0,0);
+  try { doc.setGState(new doc.GState({opacity:0.25})); } catch(e){}
+  doc.rect(M+5, y+41, 65, 5.5, 'F');
+  try { doc.setGState(new doc.GState({opacity:1})); } catch(e){}
+  doc.setFont('helvetica','bold'); doc.setFontSize(8);
+  st('#ffffff');
+  doc.text(`${organ.emoji}  ${organ.name}  ·  ${organ.company}`, M+7, y+45.5);
+
+  // ── Page 1 footer ─────────────────────────────────────────────────────
+  sf('#1c2630'); doc.rect(0, H-11, W, 11, 'F');
+  doc.setFont('helvetica','normal'); doc.setFontSize(7);
+  st('#c97e2e'); doc.text('Shadi Shafiq Obeidat  ·  shobeidat.com', M, H-4.5);
+  st('#f0e8d0'); doc.text('THE HUMAN BODY AS A COMPANY  ·  1 / 3', W-M, H-4.5, {align:'right'});
+  stripe(H-3, 3);
+
+  // ══════════════════════════════════════════════════════════════════════
+  // PAGE 2 — CLINICAL DIAGNOSIS
+  // ══════════════════════════════════════════════════════════════════════
+  doc.addPage();
+  stripe(0, 4);
+
+  // Accent header bar
+  sf(organ.accent); doc.rect(0, 4, W, 22, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(8);
+  st('#ffffff'); doc.text(`ORGAN ${organ.num}  ·  ${organ.name}  ·  ${organ.company}`, M, 14);
+  doc.text('CLINICAL DIAGNOSIS  ·  PAGE 2', W-M, 14, {align:'right'});
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+  doc.text(`Assessment date: ${dateStr}`, M, 21);
+
+  y = 36;
+
+  // Disease name
+  doc.setFont('helvetica','bold'); doc.setFontSize(30);
+  st(organ.accent);
+  const dLines = doc.splitTextToSize(rx.disease, W-M*2);
+  doc.text(dLines, M, y);
+  y += dLines.length * 13;
+
+  // Tagline
+  doc.setFont('times','italic'); doc.setFontSize(13);
+  st('#4a4a4a');
+  const tLines = doc.splitTextToSize(rx.tagline, W-M*2);
+  doc.text(tLines, M, y);
+  y += tLines.length * 6.5 + 4;
+
+  // Accent rule
+  sf(organ.accent); doc.rect(M, y, W-M*2, 1.2, 'F'); y += 7;
+
+  // Clinical picture
+  doc.setFont('helvetica','bold'); doc.setFontSize(8);
+  st('#4a5c2e'); doc.text('THE CLINICAL PICTURE', M, y); y += 6;
+
+  lf(organ.accent, 0.06); doc.rect(M, y-3, W-M*2, 44, 'F');
+  sf(organ.accent); doc.rect(M, y-3, 2, 44, 'F');
+
+  doc.setFont('times','normal'); doc.setFontSize(11);
+  st('#1c2630');
+  const diaLines = doc.splitTextToSize(rx.diagnosis, W-M*2-6);
+  doc.text(diaLines, M+6, y+4);
+  y += Math.max(44, diaLines.length * 5.2) + 5;
+
+  // Symptoms
+  doc.setFont('helvetica','bold'); doc.setFontSize(8);
+  st('#4a5c2e'); doc.text('SYMPTOMS YOU ARE LIVING WITH', M, y); y += 6;
+
+  rx.symptoms.forEach(sym => {
+    const symLines = doc.splitTextToSize(sym, W-M*2-14);
+    const boxH = symLines.length * 5.5 + 10;
+    lf('#c94a2e', 0.1); doc.rect(M, y-3, W-M*2, boxH, 'F');
+    sf('#c94a2e'); doc.rect(M, y-3, 2.5, boxH, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(9); st('#c94a2e');
+    doc.text('⚠', M+5, y+4);
+    doc.setFont('times','normal'); doc.setFontSize(11); st('#2a1a10');
+    doc.text(symLines, M+12, y+4);
+    y += boxH + 5;
+  });
+
+  // Page 2 footer
+  sf('#1c2630'); doc.rect(0, H-11, W, 11, 'F');
+  doc.setFont('helvetica','normal'); doc.setFontSize(7);
+  st('#c97e2e'); doc.text('Shadi Shafiq Obeidat  ·  shobeidat.com', M, H-4.5);
+  st('#f0e8d0'); doc.text('THE HUMAN BODY AS A COMPANY  ·  2 / 3', W-M, H-4.5, {align:'right'});
+  stripe(H-3, 3);
+
+  // ══════════════════════════════════════════════════════════════════════
+  // PAGE 3 — TREATMENT · CONNECTED RISKS · PROGNOSIS
+  // ══════════════════════════════════════════════════════════════════════
+  doc.addPage();
+  stripe(0, 4);
+
+  sf('#1c2630'); doc.rect(0, 4, W, 22, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(8);
+  st('#c97e2e'); doc.text('TREATMENT PROTOCOL  ·  CONNECTED RISKS  ·  PROGNOSIS  ·  PAGE 3', M, 14);
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+  st('#f0e8d0'); doc.text(`${organ.name}  ·  ${rx.disease}`, M, 21);
+
+  y = 36;
+
+  // Treatment
+  doc.setFont('helvetica','bold'); doc.setFontSize(9);
+  st('#4a5c2e'); doc.text('TREATMENT PROTOCOL', M, y); y += 5;
+  sd('#4a5c2e'); doc.setLineWidth(0.4); doc.line(M, y, W-M, y); y += 7;
+
+  rx.treatment.forEach((t, i) => {
+    const stepLines = doc.splitTextToSize(t.text, W-M*2-22);
+    const boxH = stepLines.length * 5.5 + 18;
+
+    // Step box background
+    lf(organ.accent, 0.06); doc.rect(M, y, W-M*2, boxH, 'F');
+    sf(organ.accent); doc.rect(M, y, 2, boxH, 'F');
+
+    // Number circle
+    sf(organ.accent); doc.circle(M+12, y+8, 5.5, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(11);
+    st('#ffffff'); doc.text(String(i+1), M+12, y+10, {align:'center'});
+
+    // Step title
+    doc.setFont('helvetica','bold'); doc.setFontSize(9);
+    st(organ.accent); doc.text(t.title, M+22, y+7);
+
+    // Step text
+    doc.setFont('times','normal'); doc.setFontSize(11);
+    st('#1c2630'); doc.text(stepLines, M+22, y+14);
+
+    y += boxH + 6;
+  });
+
+  y += 2; sd('#e0d8c0'); doc.setLineWidth(0.4); doc.line(M, y, W-M, y); y += 8;
+
+  // Connected organs
+  doc.setFont('helvetica','bold'); doc.setFontSize(9);
+  st('#4a5c2e'); doc.text('CONNECTED ORGANS AT RISK', M, y); y += 7;
+
+  const cW = (W - M*2 - 5) / 2;
+  rx.connected.forEach((c, i) => {
+    const cx = M + i*(cW+5);
+    sf(c.accent); doc.rect(cx, y, cW, 7, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(9);
+    st('#ffffff'); doc.text(c.name, cx+4, y+5);
+    const whyLines = doc.splitTextToSize(c.why, cW-4);
+    lf(c.accent, 0.08); doc.rect(cx, y+7, cW, whyLines.length*5.2+6, 'F');
+    doc.setFont('times','normal'); doc.setFontSize(10);
+    st('#1c2630'); doc.text(whyLines, cx+4, y+13);
+  });
+  const maxConnH = Math.max(...rx.connected.map(c => doc.splitTextToSize(c.why, cW-4).length*5.2+13)) + 7;
+  y += maxConnH + 8;
+
+  sd('#e0d8c0'); doc.setLineWidth(0.4); doc.line(M, y, W-M, y); y += 8;
+
+  // Prognosis
+  doc.setFont('helvetica','bold'); doc.setFontSize(9);
+  st('#4a5c2e'); doc.text('PROGNOSIS', M, y); y += 7;
+
+  const pW = (W - M*2 - 5) / 2;
+  const untLines = doc.splitTextToSize(rx.untreated, pW-8);
+  const treLines = doc.splitTextToSize(rx.treated,   pW-8);
+  const progH = Math.max(untLines.length, treLines.length) * 5.2 + 18;
+
+  // Untreated box
+  doc.setFillColor(220, 195, 190); doc.rect(M, y, pW, progH, 'F');
+  doc.setFillColor(184, 50, 50); doc.rect(M, y, pW, 7, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+  st('#ffffff'); doc.text('IF LEFT UNTREATED', M+4, y+5);
+  doc.setFont('times','normal'); doc.setFontSize(10);
+  st('#3a0a08'); doc.text(untLines, M+4, y+14);
+
+  // Treated box
+  const x2 = M + pW + 5;
+  doc.setFillColor(195, 220, 200); doc.rect(x2, y, pW, progH, 'F');
+  doc.setFillColor(58, 107, 74); doc.rect(x2, y, pW, 7, 'F');
+  doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+  st('#ffffff'); doc.text('IF TREATED NOW', x2+4, y+5);
+  doc.setFont('times','normal'); doc.setFontSize(10);
+  st('#0a2a12'); doc.text(treLines, x2+4, y+14);
+  y += progH + 10;
+
+  // Bottom tagline
+  sd('#1c2630'); doc.setLineWidth(0.5); doc.line(M, y, W-M, y); y += 8;
+  doc.setFont('helvetica','bold'); doc.setFontSize(9);
+  st('#1c2630'); doc.text('WHEN EVERY PART KNOWS ITS ROLE — EXTRAORDINARY BECOMES INEVITABLE', W/2, y, {align:'center'});
+
+  // Page 3 footer
+  sf('#1c2630'); doc.rect(0, H-11, W, 11, 'F');
+  doc.setFont('helvetica','normal'); doc.setFontSize(7);
+  st('#c97e2e'); doc.text('Shadi Shafiq Obeidat  ·  shobeidat.com', M, H-4.5);
+  st('#f0e8d0'); doc.text('THE HUMAN BODY AS A COMPANY  ·  3 / 3', W-M, H-4.5, {align:'right'});
+  stripe(H-3, 3);
+
+  // ── Save ─────────────────────────────────────────────────────────────
+  const fname = `org-health-report-${organ.name.toLowerCase()}-${new Date().toISOString().slice(0,10)}.pdf`;
+  doc.save(fname);
+}
+
+
+
 buildNav();
 buildCards();
 buildLegend();
