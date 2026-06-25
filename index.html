@@ -1053,6 +1053,199 @@
     /* Footer */
     .footer-url         { font-size: 13px; letter-spacing: 1.5px; }
   }
+
+  /* ─── HERO BODY (animated, interactive) ─── */
+  .hero-body {
+    background: var(--sand);
+    padding: 22px 16px 26px;
+    text-align: center;
+    border-bottom: 2px solid var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-hint {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--olive);
+    margin-bottom: 8px;
+  }
+  .hero-svg {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    overflow: visible;
+  }
+  .hero-shell path,
+  .hero-shell circle,
+  .hero-shell rect {
+    fill: #ddceb0;
+    stroke: var(--dark);
+    stroke-width: 2.5;
+    stroke-linejoin: round;
+  }
+  .hero-vessels line {
+    stroke: var(--olive);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.45;
+    stroke-dasharray: 340;
+    stroke-dashoffset: 340;
+    animation: heroDraw 1.4s ease forwards 0.2s;
+  }
+  @keyframes heroDraw { to { stroke-dashoffset: 0; } }
+
+  .hero-organ { cursor: pointer; }
+  .hero-organ:focus { outline: none; }
+  .hero-organ .core,
+  .hero-organ .glow { transform-box: fill-box; transform-origin: center; }
+  .hero-organ .glow {
+    opacity: 0.4;
+    animation: heroGlow 2.8s ease-out infinite;
+  }
+  @keyframes heroGlow {
+    0%   { transform: scale(1);    opacity: 0.45; }
+    70%, 100% { transform: scale(1.8); opacity: 0; }
+  }
+  .hero-organ .core {
+    stroke: #fff;
+    stroke-width: 2;
+    animation: heroFloat 3.4s ease-in-out infinite;
+  }
+  @keyframes heroFloat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+  .hero-organ.heart .core { animation: heroBeat 1.15s ease-in-out infinite; }
+  @keyframes heroBeat {
+    0%, 100% { transform: scale(1); } 15% { transform: scale(1.16); }
+    30% { transform: scale(1); } 45% { transform: scale(1.09); } 60% { transform: scale(1); }
+  }
+  .hero-organ.lungs .core { animation: heroBreathe 4s ease-in-out infinite; }
+  @keyframes heroBreathe { 0%, 100% { transform: scale(0.95); } 50% { transform: scale(1.12); } }
+  .hero-organ .ico, .hero-organ .num { pointer-events: none; }
+  .hero-organ .num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--dark);
+    opacity: 0.5;
+  }
+  .hero-organ:hover .core,
+  .hero-organ:focus .core,
+  .hero-organ.lit .core {
+    stroke-width: 3;
+    filter: drop-shadow(0 0 6px var(--oc));
+  }
+  /* Weakest-organ "ailing" flicker after diagnosis */
+  .hero-organ.ailing .core {
+    animation: heroAiling 0.7s ease-in-out infinite !important;
+  }
+  @keyframes heroAiling {
+    0%, 100% { filter: drop-shadow(0 0 2px #c94a2e); }
+    50% { filter: drop-shadow(0 0 12px #c94a2e) saturate(2.2); transform: scale(1.12); }
+  }
+  .hero-caption {
+    font-family: var(--font-display);
+    font-size: clamp(15px, 2.4vw, 20px);
+    letter-spacing: 1.5px;
+    color: var(--dark);
+    margin-top: 12px;
+    min-height: 24px;
+    transition: opacity 0.2s;
+  }
+  .hero-caption strong { color: var(--c1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-organ .glow, .hero-organ .core { animation: none !important; }
+    .hero-organ .glow { opacity: 0.22; }
+    .hero-vessels line { animation: none !important; stroke-dashoffset: 0 !important; }
+  }
+
+  /* ─── EMAIL GATE / LEAD CAPTURE ─── */
+  .rx-locked { display: none; }
+  .lead-gate {
+    margin: 18px 0 6px;
+    padding: clamp(26px, 4vw, 42px) clamp(20px, 4vw, 36px);
+    text-align: center;
+    background: linear-gradient(180deg, rgba(201,74,46,0.12), rgba(255,255,255,0.03));
+    border: 1px solid rgba(201,74,46,0.32);
+    border-radius: 4px;
+  }
+  .lead-lock { font-size: 30px; margin-bottom: 10px; }
+  .lead-title {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 3.4vw, 32px);
+    letter-spacing: 2px;
+    color: var(--cream);
+    margin-bottom: 10px;
+  }
+  .lead-sub {
+    font-family: var(--font-body);
+    font-size: clamp(13px, 1.4vw, 15px);
+    font-weight: 300;
+    color: rgba(240,232,208,0.72);
+    line-height: 1.6;
+    max-width: 440px;
+    margin: 0 auto 22px;
+  }
+  .lead-sub strong { color: var(--c3); font-weight: 600; }
+  .lead-form {
+    display: flex;
+    gap: 8px;
+    max-width: 460px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+  .lead-input {
+    flex: 1;
+    min-width: 200px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--cream);
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    border-radius: 2px;
+  }
+  .lead-input:focus { outline: none; border-color: var(--c3); background: rgba(255,255,255,0.1); }
+  .lead-input::placeholder { color: rgba(240,232,208,0.35); }
+  .lead-btn {
+    background: var(--c1);
+    color: var(--dark);
+    border: none;
+    padding: 14px 28px;
+    font-family: var(--font-display);
+    font-size: clamp(15px, 2vw, 18px);
+    letter-spacing: 3px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .lead-btn:hover:not(:disabled) { background: var(--c3); transform: translateY(-2px); }
+  .lead-btn:disabled { opacity: 0.6; cursor: default; }
+  .lead-msg {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-top: 12px;
+    min-height: 14px;
+  }
+  .lead-msg.err { color: #e8a070; }
+  .lead-msg.ok  { color: #70c490; }
+  .lead-privacy {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(240,232,208,0.3);
+    margin-top: 18px;
+  }
+  @media (max-width: 600px) {
+    .lead-btn { width: 100%; }
+    .lead-title { font-size: 24px; }
+    .lead-sub { font-size: 15px; }
+  }
 </style>
 </head>
 <body>
@@ -1137,6 +1330,31 @@
   <div class="header-label">antigravity-70s · Manager's Guide</div>
   <div class="header-title">THE HUMAN BODY<br><span>AS A COMPANY</span></div>
   <div class="header-sub">7 Essential Organs · 7 Core Functions · 1 Living Organization</div>
+</div>
+
+<!-- ═══ HERO BODY — animated living organization ═══ -->
+<div class="hero-body">
+  <div class="hero-hint">The Living Organization · Tap an organ</div>
+  <svg class="hero-svg" viewBox="0 0 300 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive human body — seven organs mapped to company functions">
+    <!-- Body silhouette -->
+    <g class="hero-shell">
+      <rect x="138" y="58" width="24" height="22" rx="6"/>
+      <path d="M124 96 C124 84 134 74 150 74 C166 74 176 84 176 96 C206 100 236 112 240 152 C243 184 232 206 226 236 C221 262 216 300 208 330 C204 346 197 356 180 356 L120 356 C103 356 96 346 92 330 C84 300 79 262 74 236 C68 206 57 184 60 152 C64 112 94 100 124 96 Z"/>
+      <circle cx="150" cy="40" r="30"/>
+    </g>
+    <!-- Connective vessels (animate-in on load) -->
+    <g class="hero-vessels">
+      <line x1="150" y1="44" x2="150" y2="166"/>
+      <line x1="150" y1="166" x2="108" y2="170"/>
+      <line x1="150" y1="166" x2="192" y2="170"/>
+      <line x1="150" y1="166" x2="164" y2="226"/>
+      <line x1="150" y1="166" x2="116" y2="226"/>
+      <line x1="164" y1="226" x2="150" y2="282"/>
+    </g>
+    <!-- Organ nodes (built by JS from ORGANS) -->
+    <g id="heroOrgans"></g>
+  </svg>
+  <div class="hero-caption" id="heroCaption">7 organs. 1 living organization.</div>
 </div>
 
 <!-- ═══ TAGLINE ═══ -->
@@ -1334,6 +1552,25 @@
 const SITE_URL   = 'https://shobeidat.com/';
 const SITE_TITLE = 'The Human Body as a Company — Antigravity Manager\'s Guide';
 const SITE_DESC  = '7 essential organs. 7 core functions. 1 living organization. An interactive manager\'s guide by Shadi Shafiq Obeidat.';
+
+// ─── LEAD CAPTURE — reuses the existing Vital Signals Supabase ────────────────
+// One shared email list with the deployed app: writes to the SAME `subscribers`
+// table via the existing SECURITY-DEFINER RPC `upsert_subscriber(p_email,p_name,
+// p_source)`. No new table/SQL needed. The diagnosis (weakest organ) is encoded
+// into p_source so each lead carries its context.
+//   ONLY STEP LEFT: paste the project's anon (public) key below.
+//   Get it from Supabase dashboard → Project Settings → API → anon key,
+//   or copy it from the deployed landing/app.html source (it's already public).
+// Until the anon key is set the gate runs in DEMO MODE (unlocks instantly,
+// console-logs the lead) so the page works now.
+const SUPABASE_URL  = 'https://mlssrsvvluvvbatqwxjh.supabase.co';  // existing project (no trailing slash)
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1sc3Nyc3Z2bHV2dmJhdHF3eGpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkwOTAzNzksImV4cCI6MjA5NDY2NjM3OX0.sp_ZIcSpC2yq0qtrB60vPnN8LzHTSqWZtAHp43lrma0';   // anon/public key (safe to expose; RPC is insert-only)
+const LEAD_RPC      = 'upsert_subscriber';
+
+// Unlock state — remembered so returning visitors / retakes skip the gate
+const LEAD_KEY = 'ab_lead_unlocked';
+let leadUnlocked = false;
+try { leadUnlocked = localStorage.getItem(LEAD_KEY) === '1'; } catch (_) {}
 
 // ─── ORGAN DATA ───────────────────────────────────────────────────────────────
 const ORGANS = [
@@ -1822,6 +2059,7 @@ function showResults() {
   const minScore   = Math.min(...scores);
   const weakestIdx = scores.indexOf(minScore);
   lastScores = scores; lastWeakestIdx = weakestIdx;
+  heroSetAiling(weakestIdx);
 
   // Build scores bar chart
   document.getElementById('assessScoresBand').innerHTML = ORGANS.map((o, i) => `
@@ -1854,51 +2092,142 @@ function showResults() {
       `<div class="rx-symptom"><span class="rx-sym-icon">⚠</span><span>${s}</span></div>`).join('')}
     </div>
 
-    <div class="rx-section-label">Treatment Protocol</div>
-    <div class="rx-treatment">${rx.treatment.map((t, i) => `
-      <div class="rx-step">
-        <div class="rx-step-num" style="color:${rx.accent}">${i+1}</div>
-        <div>
-          <div class="rx-step-title" style="color:${rx.accent}">${t.title}</div>
-          <div class="rx-step-text">${t.text}</div>
+    <!-- ── EMAIL GATE — captures lead at peak intent ── -->
+    <div id="leadGate" class="lead-gate">
+      <div class="lead-lock">🔒</div>
+      <div class="lead-title">Your Treatment Is Ready</div>
+      <div class="lead-sub">Enter your email to unlock the full <strong>Treatment Protocol</strong>, your <strong>Prognosis</strong>, and the downloadable <strong>3-page diagnostic report</strong>.</div>
+      <form class="lead-form" onsubmit="return handleLeadSubmit(event)">
+        <input id="leadEmail" class="lead-input" type="email" required placeholder="you@company.com" autocomplete="email" inputmode="email" />
+        <button id="leadBtn" class="lead-btn" type="submit">Unlock Report →</button>
+      </form>
+      <div id="leadMsg" class="lead-msg"></div>
+      <div class="lead-privacy">No spam · Your diagnosis stays private · Unsubscribe anytime</div>
+    </div>
+
+    <!-- ── LOCKED CONTENT — revealed after email ── -->
+    <div id="rxLocked" class="rx-locked">
+      <div class="rx-section-label">Treatment Protocol</div>
+      <div class="rx-treatment">${rx.treatment.map((t, i) => `
+        <div class="rx-step">
+          <div class="rx-step-num" style="color:${rx.accent}">${i+1}</div>
+          <div>
+            <div class="rx-step-title" style="color:${rx.accent}">${t.title}</div>
+            <div class="rx-step-text">${t.text}</div>
+          </div>
+        </div>`).join('')}
+      </div>
+
+      <div class="rx-section-label">Connected Organs at Risk</div>
+      <div class="rx-connected">${rx.connected.map(c => `
+        <div class="rx-connected-item">
+          <div class="rx-connected-tag" style="background:${c.accent}">${c.name}</div>
+          <div class="rx-connected-why">${c.why}</div>
+        </div>`).join('')}
+      </div>
+
+      <div class="rx-section-label">Prognosis</div>
+      <div class="rx-prognosis">
+        <div class="rx-prog-card bad">
+          <div class="rx-prog-label">If Left Untreated</div>
+          <div class="rx-prog-text">${rx.untreated}</div>
         </div>
-      </div>`).join('')}
-    </div>
-
-    <div class="rx-section-label">Connected Organs at Risk</div>
-    <div class="rx-connected">${rx.connected.map(c => `
-      <div class="rx-connected-item">
-        <div class="rx-connected-tag" style="background:${c.accent}">${c.name}</div>
-        <div class="rx-connected-why">${c.why}</div>
-      </div>`).join('')}
-    </div>
-
-    <div class="rx-section-label">Prognosis</div>
-    <div class="rx-prognosis">
-      <div class="rx-prog-card bad">
-        <div class="rx-prog-label">If Left Untreated</div>
-        <div class="rx-prog-text">${rx.untreated}</div>
+        <div class="rx-prog-card good">
+          <div class="rx-prog-label">If Treated Now</div>
+          <div class="rx-prog-text">${rx.treated}</div>
+        </div>
       </div>
-      <div class="rx-prog-card good">
-        <div class="rx-prog-label">If Treated Now</div>
-        <div class="rx-prog-text">${rx.treated}</div>
-      </div>
+
+      <button class="rx-pdf-btn" style="background:${rx.accent};color:white" onclick="generatePDF()">
+        ⬇ Download Your Diagnostic Report
+        <span class="pdf-sub">3-page PDF · Organ scores · Treatment protocol · Prognosis</span>
+      </button>
     </div>
 
-    <button class="rx-pdf-btn" style="background:${rx.accent};color:white" onclick="generatePDF()">
-      ⬇ Download Your Diagnostic Report
-      <span class="pdf-sub">3-page PDF · Organ scores · Treatment protocol · Prognosis</span>
-    </button>
     <button class="rx-retake-btn" onclick="retakeAssessment()">↺ Retake the Diagnosis</button>
   `;
+
+  // Returning / already-unlocked visitors skip the gate
+  if (leadUnlocked) revealLocked(false);
 
   el.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
 function retakeAssessment() {
+  heroClearAiling();
   document.getElementById('assessResults').classList.remove('active');
   document.getElementById('assessCTA').style.display = '';
   document.getElementById('assessWrap').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+// ═══ EMAIL GATE / LEAD CAPTURE ═══════════════════════════════════════════════
+async function submitLead(email) {
+  const rx = PRESCRIPTIONS[lastWeakestIdx];
+  // Encode the diagnosis into the source tag so the subscribers row keeps context.
+  const source = `bodytype-diagnosis | ${ORGANS[lastWeakestIdx].name}${rx ? ' | ' + rx.disease : ''}`;
+  const params = { p_email: email, p_name: null, p_source: source };
+
+  // Demo mode — no anon key wired yet; let the page work and log the capture.
+  if (!SUPABASE_URL || !SUPABASE_ANON) {
+    console.log('[lead — DEMO MODE, not sent]', params);
+    return { ok: true, demo: true };
+  }
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${LEAD_RPC}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON,
+        'Authorization': `Bearer ${SUPABASE_ANON}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    });
+    return { ok: r.ok, status: r.status };
+  } catch (e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+async function handleLeadSubmit(e) {
+  e.preventDefault();
+  const input = document.getElementById('leadEmail');
+  const msg   = document.getElementById('leadMsg');
+  const btn   = document.getElementById('leadBtn');
+  const email = input.value.trim();
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.className = 'lead-msg err';
+    msg.textContent = 'Please enter a valid email address.';
+    return false;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Unlocking…';
+  msg.textContent = '';
+
+  const res = await submitLead(email);
+
+  // Never trap the user: unlock on success, and also unlock after a backend
+  // hiccup (the email is already typed; capture can be retried server-side).
+  try { localStorage.setItem(LEAD_KEY, '1'); } catch (_) {}
+  leadUnlocked = true;
+
+  if (!res.ok) {
+    msg.className = 'lead-msg err';
+    msg.textContent = 'Saved locally — unlocking your report…';
+  }
+  setTimeout(() => revealLocked(true), res.ok ? 150 : 500);
+  return false;
+}
+
+function revealLocked(scroll) {
+  const gate = document.getElementById('leadGate');
+  const lock = document.getElementById('rxLocked');
+  if (gate) gate.style.display = 'none';
+  if (lock) {
+    lock.style.display = 'block';
+    if (scroll) lock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 }
 
 
@@ -2235,9 +2564,69 @@ function generatePDF() {
 
 
 
+// ─── BUILD HERO BODY ──────────────────────────────────────────────────────────
+// Anatomical positions matching the silhouette in viewBox 0 0 300 380.
+// Index matches ORGANS order: 0 brain, 1 heart, 2 lungs, 3 stomach, 4 liver, 5 kidneys, 6 immune.
+const HERO_POS = [
+  { x:150, y:44,  r:25, cls:'brain'   },
+  { x:150, y:166, r:17, cls:'heart'   },
+  { x:108, y:170, r:15, cls:'lungs'   },
+  { x:164, y:226, r:16, cls:'stomach' },
+  { x:116, y:226, r:15, cls:'liver'   },
+  { x:150, y:282, r:16, cls:'kidneys' },
+  { x:192, y:170, r:15, cls:'immune'  }
+];
+
+function buildHeroBody() {
+  const g = document.getElementById('heroOrgans');
+  g.innerHTML = ORGANS.map((o, i) => {
+    const p = HERO_POS[i];
+    // 🫁 is missing from many emoji fonts and boxes inside SVG <text> — draw lungs as an inline glyph.
+    const icon = (o.name === 'LUNGS')
+      ? `<g class="ico" transform="translate(${p.x} ${p.y}) scale(${(p.r/11).toFixed(2)})"
+            fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+           <path d="M0 -8 V-1"/>
+           <path d="M0 -3 C-3 -3 -7 -1 -8 4 C-8.5 7.5 -6.5 9 -4 8.4 C-1.8 7.9 -1.4 5.5 -1.3 2.5 L-1.3 -1"/>
+           <path d="M0 -3 C3 -3 7 -1 8 4 C8.5 7.5 6.5 9 4 8.4 C1.8 7.9 1.4 5.5 1.3 2.5 L1.3 -1"/>
+         </g>`
+      : `<text class="ico" x="${p.x}" y="${p.y}" text-anchor="middle" dominant-baseline="central" font-size="${Math.round(p.r*0.95)}">${o.emoji}</text>`;
+    return `
+      <g class="hero-organ ${p.cls}" id="hero-organ-${i}" style="--oc:${o.accent}"
+         tabindex="0" role="button" aria-label="${o.name} — ${o.company}"
+         onclick="heroPick(${i})" onmouseenter="heroHover(${i})"
+         onfocus="heroHover(${i})" onkeypress="if(event.key==='Enter')heroPick(${i})">
+        <circle class="glow" cx="${p.x}" cy="${p.y}" r="${p.r}" fill="${o.accent}" style="animation-delay:${(i*0.34).toFixed(2)}s"/>
+        <circle class="core" cx="${p.x}" cy="${p.y}" r="${p.r}" fill="${o.accent}" style="animation-delay:${(i*0.2).toFixed(2)}s"/>
+        ${icon}
+        <text class="num" x="${p.x}" y="${p.y + p.r + 11}" text-anchor="middle">${o.num}</text>
+      </g>`;
+  }).join('');
+}
+
+function heroHover(i) {
+  const o = ORGANS[i];
+  document.getElementById('heroCaption').innerHTML = `${o.emoji} <strong>${o.name}</strong> — ${o.company}`;
+}
+
+function heroPick(i) {
+  heroHover(i);
+  scrollToCard(i);
+}
+
+// Light up the weakest organ on the body after a diagnosis (called from showResults)
+function heroSetAiling(idx) {
+  document.querySelectorAll('.hero-organ').forEach(el => el.classList.remove('ailing'));
+  const el = document.getElementById('hero-organ-' + idx);
+  if (el) el.classList.add('ailing');
+}
+function heroClearAiling() {
+  document.querySelectorAll('.hero-organ').forEach(el => el.classList.remove('ailing'));
+}
+
 buildNav();
 buildCards();
 buildLegend();
+buildHeroBody();
 
 setTimeout(() => {
   document.getElementById('card-0').classList.add('open');
